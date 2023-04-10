@@ -216,3 +216,35 @@ namespace Music_Player
         }
     }
 }
+private void LocateAudioButton_Click(object sender, EventArgs e)
+{
+    string directoryHint = DirectoryHintTextBox.Text;
+    if (string.IsNullOrWhiteSpace(directoryHint) || !Directory.Exists(directoryHint))
+    {
+        MessageBox.Show("Please enter a valid directory hint.", "Invalid Directory Hint", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        return;
+    }
+
+    // Get audio files in the specified directory and subdirectories
+    string[] audioFiles = Directory.GetFiles(directoryHint, "*.mp3", SearchOption.AllDirectories);
+
+    // Initialize the progress bar
+    AudioFilesProgressBar.Minimum = 0;
+    AudioFilesProgressBar.Maximum = audioFiles.Length;
+    AudioFilesProgressBar.Value = 0;
+    AudioFilesProgressBar.Step = 1;
+    AudioFilesProgressBar.Visible = true;
+
+    foreach (string audioFile in audioFiles)
+    {
+        // Update the progress bar
+        AudioFilesProgressBar.PerformStep();
+
+        // Process the audio file
+        // ...
+    }
+
+    // Hide the progress bar
+    AudioFilesProgressBar.Visible = false;
+}
+
